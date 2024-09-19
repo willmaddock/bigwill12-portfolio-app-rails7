@@ -1,0 +1,17 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @student %>
+
+<div>
+  <!-- Display profile picture or a default image -->
+  <% if @student.profile_picture.attached? %>
+    <%= image_tag @student.profile_picture.variant(resize_to_fill: [200, 200]), alt: "Profile Picture" %>
+  <% else %>
+    <%= image_tag asset_path('default_profile_picture.png'), size: "200x200", alt: "Default Profile Picture" %>
+  <% end %>
+
+  <%= link_to "Edit this student", edit_student_path(@student) %> |
+  <%= link_to "Back to students", students_path %>
+
+  <%= button_to "Destroy this student", @student, method: :delete %>
+</div>
