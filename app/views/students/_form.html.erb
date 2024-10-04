@@ -26,9 +26,10 @@
     <%= form.email_field :school_email %>
   </div>
 
-  <div class="field">
-    <%= form.label :major %>
-    <%= form.text_field :major %>
+  <!-- Dropdown menu for selecting a major -->
+  <div>
+    <%= form.label :major, style: "display: block" %>
+    <%= form.select :major, options_for_select(Student::VALID_MAJORS), { prompt: "Select a Major" }, class: "form-control" %>
   </div>
 
   <div class="field">

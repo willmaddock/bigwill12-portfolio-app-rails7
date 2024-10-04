@@ -1,9 +1,25 @@
 class StudentsController < ApplicationController
-  before_action :set_student, only: %i[ show edit update destroy ]
+  before_action :set_student, only: %i[show edit update destroy]
 
   # GET /students or /students.json
   def index
-    @students = Student.all
+    # Log the entire request parameters for debugging purposes
+    Rails.logger.info "Params: #{params.inspect}"
+
+    # Params[:search]: Data is passed from the form field as a hash to know
+    # what attribute and value to search and will be stored in @search_params
+    @search_params = params[:search] || {} # If no search criteria is provided, assign an empty hash {}
+
+    @students = Student.all # Initially fetch all students
+
+    # Log the search parameters to see what the user is searching for
+    Rails.logger.info "Search Params: #{@search_params.inspect}"
+
+    # Check if search criteria for major is present
+    if @search_params[:major].present?
+      # Use Active Record's ORM to query the database for students with the specified major
+      @students = @students.where(major: @search_params[:major])
+    end
   end
 
   # GET /students/1 or /students/1.json
@@ -58,12 +74,13 @@ class StudentsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_student
-      @student = Student.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
+  # Use callbacks to share common setup or constraints between actions.
+  def set_student
+    @student = Student.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
   def student_params
     params.require(:student).permit(:first_name, :last_name, :school_email, :major, :graduation_date, :profile_picture)
   end
