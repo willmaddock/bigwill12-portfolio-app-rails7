@@ -1,14 +1,16 @@
-<p style="color: green"><%= notice %></p>
+<p style="color: green"><%= notice %></p> <!-- Display any notice message in green -->
 
-<h1>Students</h1>
+<h1>Students</h1> <!-- Header for the students page -->
 
-<div id="students">
-  <% @students.each do |student| %>
-    <%= render student %>
+<%= render 'search_form', search_params: @search_params %> <!-- Render the search form with search parameters -->
+
+<div id="students"> <!-- Container for the list of students -->
+  <% @students.each do |student| %> <!-- Iterate through each student in the @students array -->
+    <%= render student %> <!-- Render the individual student details -->
     <p>
-      <%= link_to "Show this student", student %>
+      <%= link_to "Show this student", student %> <!-- Link to view more details about the student -->
     </p>
   <% end %>
 </div>
 
-<%= link_to "New student", new_student_path %>
+<%= link_to "New student", new_student_path %> <!-- Link to create a new student -->

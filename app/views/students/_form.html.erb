@@ -12,36 +12,37 @@
   <% end %>
 
   <div class="field">
-    <%= form.label :first_name %>
-    <%= form.text_field :first_name %>
+    <%= form.label :first_name %> <!-- Label for the first name field -->
+    <%= form.text_field :first_name %> <!-- Input field for first name -->
   </div>
 
   <div class="field">
-    <%= form.label :last_name %>
-    <%= form.text_field :last_name %>
+    <%= form.label :last_name %> <!-- Label for the last name field -->
+    <%= form.text_field :last_name %> <!-- Input field for last name -->
   </div>
 
   <div class="field">
-    <%= form.label :school_email %>
-    <%= form.email_field :school_email %>
+    <%= form.label :school_email %> <!-- Label for the school email field -->
+    <%= form.email_field :school_email %> <!-- Input field for school email -->
+  </div>
+
+  <!-- Dropdown menu for selecting a major -->
+  <div>
+    <%= form.label :major, style: "display: block" %> <!-- Label for the major field -->
+    <%= form.select :major, options_for_select(Student::VALID_MAJORS), { prompt: "Select a Major" }, class: "form-control" %> <!-- Dropdown for majors -->
   </div>
 
   <div class="field">
-    <%= form.label :major %>
-    <%= form.text_field :major %>
+    <%= form.label :graduation_date %> <!-- Label for the graduation date field -->
+    <%= form.date_select :graduation_date %> <!-- Date selection for graduation date -->
   </div>
 
   <div class="field">
-    <%= form.label :graduation_date %>
-    <%= form.date_select :graduation_date %>
-  </div>
-
-  <div class="field">
-    <%= form.label :profile_picture %>
-    <%= form.file_field :profile_picture %>
+    <%= form.label :profile_picture %> <!-- Label for the profile picture field -->
+    <%= form.file_field :profile_picture %> <!-- File upload field for profile picture -->
   </div>
 
   <div class="actions">
-    <%= form.submit %>
+    <%= form.submit %> <!-- Submit button for the form -->
   </div>
 <% end %>
