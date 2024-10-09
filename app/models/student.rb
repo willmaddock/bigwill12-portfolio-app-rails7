@@ -1,6 +1,6 @@
 class Student < ApplicationRecord
   # ActiveStorage for attaching a profile picture
-  has_one_attached :profile_picture
+  has_one_attached :profile_picture, dependent: :purge_later
 
   # Validation for profile picture file type and size
   validate :acceptable_profile_picture

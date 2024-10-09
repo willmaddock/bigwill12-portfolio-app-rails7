@@ -59,6 +59,10 @@ group :development do
 
   gem 'will_paginate', '~> 3.3.0'
 
+  group :development do
+    gem 'faker'
+  end
+
   # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]
   # gem "rack-mini-profiler"
 
