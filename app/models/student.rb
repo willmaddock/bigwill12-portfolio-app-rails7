@@ -10,7 +10,7 @@ class Student < ApplicationRecord
                   "Computer Science BS", "Cybersecurity Major", "Data Science and Machine Learning Major"]
 
   # Validation for name, major, email, and graduation date
-  validates :first_name, :last_name, :major, presence: true, length: { in: 2..25 }
+  validates :first_name, :last_name, :major, presence: true
   validates :school_email, presence: true, uniqueness: true,
             format: { with: /\A[\w+\-.]+@msudenver.edu\z/i, message: "must be a valid MSU Denver email" }
   validates :graduation_date, presence: true

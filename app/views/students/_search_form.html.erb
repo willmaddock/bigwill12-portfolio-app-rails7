@@ -1,11 +1,21 @@
 <%= form_with(url: students_path, method: :get, local: true, class: "form-inline") do |form| %>
   <!-- Create a form to search students by major -->
   <div>
-    <%= form.label :major, "Select Major", class: "form-label" %> <!-- Label for the major selection dropdown -->
-    <%= form.select :major, options_for_select(Student::VALID_MAJORS), { prompt: "Any Major" }, name: 'search[major]', class: "form-control" %> <!-- Dropdown for selecting a major, populated with valid majors -->
+    <%= form.label :major, "Select Major", class: "form-label" %>
+    <%= form.select :major, options_for_select(Student::VALID_MAJORS), { prompt: "Any Major" }, name: 'search[major]', class: "form-control" %>
   </div>
 
   <div>
     <%= form.submit "Search", class: "btn btn-primary" %> <!-- Submit button to initiate the search -->
   </div>
 <% end %>
+
+<!-- Separate Show All button as a link -->
+<div>
+  <%= link_to "Show All", students_path(show_all: true), class: "btn btn-secondary" %> <!-- Link to show all students -->
+</div>
+
+<!-- Display instruction under the Show All button -->
+<div>
+  <p>Please enter search criteria to find students.</p> <!-- Instructional text -->
+</div>
