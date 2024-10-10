@@ -23,8 +23,12 @@
   </div>
 
   <div class="mb-3">
-    <%= form.label :school_email, class: "form-label" %> <!-- Label for the school email field -->
-    <%= form.email_field :school_email, class: "form-control" %> <!-- Input field for school email -->
+    <!-- Email field with ARIA label and error message -->
+    <%= form.label :school_email, "Email Address", aria: { label: "Email Address" }, class: "form-label" %>
+    <%= form.email_field :school_email, id: 'email', required: true, aria: { describedby: 'emailError' }, class: "form-control" %> <!-- Input field for school email -->
+    <div id="emailError" class="error-message" role="alert">
+      <%= @student.errors[:school_email].any? ? 'Please enter a valid MSU Denver email address.' : '' %>
+    </div>
   </div>
 
   <div class="mb-3">

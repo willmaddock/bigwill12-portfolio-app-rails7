@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>YourApp</title>
+  <title>Student Finder</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <!-- Rails security and asset pipeline -->
@@ -24,24 +24,24 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
     <a class="navbar-brand" href="#">
-      <%= image_tag 'logo.png', alt: 'YourApp Logo', class: 'img-fluid' %>
+      <%= image_tag 'logo.png', alt: 'YourApp Logo', class: 'img-fluid' %> <!-- Logo for the application -->
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
+      <span class="navbar-toggler-icon"></span> <!-- Button for toggling the navigation menu on smaller screens -->
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="<%= students_path %>">Home</a>
+          <a class="nav-link active" aria-current="page" href="<%= students_path %>">Home</a> <!-- Home link -->
         </li>
         <!-- Account Dropdown -->
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="accountDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <a class="nav-link dropdown-toggle" href="#" id="accountDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Account menu">
             Account
           </a>
           <ul class="dropdown-menu" aria-labelledby="accountDropdown">
-            <li><a class="dropdown-item" href="#">Sign In</a></li>
-            <li><a class="dropdown-item" href="#">Sign Up</a></li>
+            <li><a class="dropdown-item" href="#" aria-label="Sign In to your account">Sign In</a></li> <!-- Sign In link with ARIA label for accessibility -->
+            <li><a class="dropdown-item" href="#" aria-label="Create a new account">Sign Up</a></li> <!-- Sign Up link with ARIA label for accessibility -->
           </ul>
         </li>
       </ul>
@@ -51,13 +51,13 @@
 
 <!-- Banner -->
 <div class="container-fluid bg-primary text-white p-4 text-center">
-  <h1>Student Finder</h1>
-  <p>Helping you manage students efficiently</p>
+  <h1>Student Finder</h1> <!-- Main title of the application -->
+  <p>Helping you manage students efficiently</p> <!-- Subtitle or description -->
 </div>
 
 <!-- Main content -->
 <div class="container mt-4">
-  <%= yield %>
+  <%= yield %> <!-- Placeholder for content from other views -->
 </div>
 
 <!-- Test Dropdown
