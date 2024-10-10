@@ -3,45 +3,18 @@ class StudentsController < ApplicationController
 
   # GET /students or /students.json
   def index
-    # Log the request parameters for debugging purposes
     Rails.logger.info "Params: #{params.inspect}"
 
-    # Initialize @students as an empty array (no students displayed initially)
-    @students = []
+    @search_params = params[:search] || {}
+    @students = if params[:show_all]
+                  Student.all
+                elsif @search_params.present? && !@search_params.values.all?(&:blank?)
+                  search_students(@search_params)
+                else
+                  Student.none # If no search criteria, set to an empty result
+                end
 
-    # Params[:search]: Data is passed from the form field as a hash to know
-    # what attribute and value to search and will be stored in @search_params
-    @search_params = params[:search] || {} # If no search criteria is provided, assign an empty hash {}
-
-    # Check if the "Show All" button was clicked
-    if params[:show_all]
-      # All students will be displayed
-      @students = Student.all
-    elsif @search_params.present? && !@search_params.values.all?(&:blank?)
-      # Only execute the following if there are search parameters provided
-      @students = Student.all
-
-      # Filter by major if provided
-      if @search_params[:major].present?
-        @students = @students.where(major: @search_params[:major])
-      end
-
-      # Graduation date filtering
-      if @search_params[:graduation_date].present? && @search_params[:date_filter].present?
-        date = Date.parse(@search_params[:graduation_date])
-        if @search_params[:date_filter] == "before"
-          @students = @students.where("graduation_date < ?", date)
-        elsif @search_params[:date_filter] == "after"
-          @students = @students.where("graduation_date > ?", date)
-        end
-      end
-
-      # Log the search parameters to see what the user is searching for
-      Rails.logger.info "Search Params: #{@search_params.inspect}"
-    end
-
-    # Handle pagination after filtering
-    per_page = params[:per_page] || 10 # Default to 10 if not specified
+    per_page = params[:per_page] || 10
     @students = @students.paginate(page: params[:page], per_page: per_page) if @students.present?
   end
 
@@ -98,13 +71,39 @@ class StudentsController < ApplicationController
 
   private
 
-  # Use callbacks to share common setup or constraints between actions.
+  # Set the student for actions that require it
   def set_student
     @student = Student.find(params[:id])
+  rescue ActiveRecord::RecordNotFound
+    redirect_to students_path, alert: "Student not found."
   end
 
-  # Only allow a list of trusted parameters through.
+  # Strong parameters for creating/updating students
   def student_params
     params.require(:student).permit(:first_name, :last_name, :school_email, :major, :graduation_date, :profile_picture)
+  end
+
+  # Method to handle searching students based on the search params
+  def search_students(search_params)
+    Rails.logger.info "Searching with params: #{search_params.inspect}" # Log search parameters
+    students = Student.all
+
+    if search_params[:major].present?
+      students = students.where(major: search_params[:major])
+    end
+
+    if search_params[:graduation_date].present? && search_params[:date_filter].present?
+      date = Date.parse(search_params[:graduation_date]) rescue nil
+      if date.present?
+        if search_params[:date_filter] == "before"
+          students = students.where("graduation_date < ?", date)
+        elsif search_params[:date_filter] == "after"
+          students = students.where("graduation_date > ?", date)
+        end
+      end
+    end
+
+    Rails.logger.info "Found #{students.count} students" # Log the number of students found
+    students
   end
 end

@@ -1,53 +1,53 @@
-<p style="color: green"><%= notice %></p> <!-- Display any notice message in green -->
+<div class="container">
+  <h1>Students</h1>
 
-<h1>Students</h1> <!-- Header for the students page -->
+  <!-- Flash messages -->
+  <% if notice %>
+    <div class="alert alert-success" role="alert">
+      <%= notice %>
+    </div>
+  <% elsif alert %>
+    <div class="alert alert-danger" role="alert">
+      <%= alert %>
+    </div>
+  <% end %>
 
-<%= form_with(url: students_path, method: :get, local: true, class: "form-inline") do |form| %>
-  <!-- Create a form to search students by major -->
-  <div>
-    <%= form.label :major, "Select Major", class: "form-label" %>
-    <%= form.select :major, options_for_select(Student::VALID_MAJORS), { prompt: "Any Major" }, name: 'search[major]', class: "form-control" %>
+  <!-- Search form -->
+  <div class="row mb-3">
+    <div class="col">
+      <%= form_with url: students_path, method: :get, local: true do |form| %>
+        <div class="row g-2">
+          <div class="col-md-4">
+            <%= form.label :major, "Major", class: "form-label" %>
+            <%= form.select "search[major]", options_for_select(Student::VALID_MAJORS, @search_params[:major]), { include_blank: true }, class: "form-select", aria: { label: "Select Major for Search" } %>
+          </div>
+          <div class="col-md-4">
+            <%= form.label :graduation_date, "Graduation Date", class: "form-label" %>
+            <%= form.date_field "search[graduation_date]", value: @search_params[:graduation_date], class: "form-control", aria: { label: "Filter by graduation date" } %>
+          </div>
+          <div class="col-md-2">
+            <%= form.label :date_filter, "Date Filter", class: "form-label" %>
+            <%= form.select "search[date_filter]", options_for_select([["Before", "before"], ["After", "after"]], @search_params[:date_filter]), { include_blank: true }, class: "form-select", aria: { label: "Filter by before or after graduation" } %>
+          </div>
+          <div class="col-md-2">
+            <%= form.submit "Search", class: "btn btn-primary w-100 mt-4" %>
+          </div>
+        </div>
+      <% end %>
+    </div>
   </div>
 
-  <!-- Form for graduation date -->
-  <div>
-    <%= form.label :graduation_date, "Graduation Date", class: "form-label" %>
-    <%= form.date_field 'search[graduation_date]', class: "form-control" %>
+  <!-- Show All button -->
+  <div class="mb-3">
+    <%= link_to "Show All", students_path(show_all: true), class: "btn btn-secondary" %>
   </div>
 
-  <!-- Radio buttons to filter graduation date by before/after -->
-  <div>
-    <%= form.label :date_filter, "Filter By", class: "form-label" %>
-    <%= form.radio_button 'search[date_filter]', 'before' %> Before
-    <%= form.radio_button 'search[date_filter]', 'after' %> After
-  </div>
+  <!-- Instruction text -->
+  <p>Please enter search criteria to find students or click "Show All".</p>
 
-  <!-- Dropdown to select the number of students per page -->
-  <div>
-    <%= form.label :per_page, "Students per page", class: "form-label" %>
-    <%= form.select 'per_page', [5, 10, 20], { selected: params[:per_page] || 10 }, class: "form-control" %>
-  </div>
-
-  <!-- Submit button for search -->
-  <div>
-    <%= form.submit "Search", class: "btn btn-primary" %>
-  </div>
-<% end %>
-
-<!-- Show All button to display all students -->
-<div>
-  <%= link_to "Show All", students_path(show_all: true), class: "btn btn-secondary" %>
-</div>
-
-<!-- Instruction text to guide the user -->
-<div>
-  <p>Please enter search criteria to find students.</p>
-</div>
-
-<!-- Display students if a search is performed or "Show All" is clicked -->
-<% if @students.any? %>
-  <div id="students">
-    <table class="table">
+  <!-- Students table -->
+  <% if @students.present? %>
+    <table class="table table-hover">
       <thead>
       <tr>
         <th>First Name</th>
@@ -65,22 +65,23 @@
           <td><%= student.major %></td>
           <td><%= student.graduation_date.strftime('%B %d, %Y') if student.graduation_date %></td>
           <td>
-            <%= link_to 'Show', student_path(student), class: 'btn btn-info' %>
-            <%= link_to 'Edit', edit_student_path(student), class: 'btn btn-warning' %>
-            <%= link_to 'Delete', student_path(student), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+            <%= link_to 'Show', student_path(student), class: 'btn btn-info', data: { toggle: 'tooltip', placement: 'top', title: 'View student details' } %>
+            <%= link_to 'Edit', edit_student_path(student), class: 'btn btn-warning', data: { toggle: 'tooltip', placement: 'top', title: 'Edit student details' } %>
+            <%= link_to 'Delete', student_path(student), method: :delete, data: { confirm: 'Are you sure?', toggle: 'tooltip', placement: 'top', title: 'Delete student' }, class: 'btn btn-danger' %>
           </td>
         </tr>
       <% end %>
       </tbody>
     </table>
 
-    <!-- Pagination links -->
-    <div class="pagination">
-      <%= will_paginate @students %>
+    <!-- Pagination -->
+    <%= will_paginate @students, class: 'pagination justify-content-center' %>
+  <% else %>
+    <div class="alert alert-warning" role="alert">
+      No students found. Please perform a search or click "Show All".
     </div>
-  </div>
-<% else %>
-  <p>No students found. Please enter search criteria to find students.</p> <!-- Message displayed when no students are found -->
-<% end %>
+  <% end %>
 
-<%= link_to "New student", new_student_path, class: "btn btn-success" %> <!-- Link to create a new student -->
+  <!-- New student link -->
+  <%= link_to "New Student", new_student_path, class: "btn btn-success mt-3" %>
+</div>

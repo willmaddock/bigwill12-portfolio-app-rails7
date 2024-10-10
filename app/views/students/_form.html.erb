@@ -1,6 +1,6 @@
-<%= form_with(model: student, local: true) do |form| %>
+<%= form_with(model: student, local: true, class: "needs-validation", novalidate: true) do |form| %>
   <% if student.errors.any? %>
-    <div id="error_explanation">
+    <div id="error_explanation" class="alert alert-danger">
       <h2><%= pluralize(student.errors.count, "error") %> prohibited this student from being saved:</h2>
 
       <ul>
@@ -11,38 +11,38 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= form.label :first_name %> <!-- Label for the first name field -->
-    <%= form.text_field :first_name %> <!-- Input field for first name -->
+  <div class="mb-3">
+    <%= form.label :first_name, class: "form-label" %> <!-- Label for the first name field -->
+    <%= form.text_field :first_name, class: "form-control" %> <!-- Input field for first name -->
   </div>
 
-  <div class="field">
-    <%= form.label :last_name %> <!-- Label for the last name field -->
-    <%= form.text_field :last_name %> <!-- Input field for last name -->
+  <div class="mb-3">
+    <%= form.label :last_name, class: "form-label" %> <!-- Label for the last name field -->
+    <%= form.text_field :last_name, class: "form-control" %> <!-- Input field for last name -->
   </div>
 
-  <div class="field">
-    <%= form.label :school_email %> <!-- Label for the school email field -->
-    <%= form.email_field :school_email %> <!-- Input field for school email -->
+  <div class="mb-3">
+    <%= form.label :school_email, class: "form-label" %> <!-- Label for the school email field -->
+    <%= form.email_field :school_email, class: "form-control" %> <!-- Input field for school email -->
   </div>
 
   <!-- Dropdown menu for selecting a major -->
-  <div>
-    <%= form.label :major, style: "display: block" %> <!-- Label for the major field -->
-    <%= form.select :major, options_for_select(Student::VALID_MAJORS), { prompt: "Select a Major" }, class: "form-control" %> <!-- Dropdown for majors -->
+  <div class="mb-3">
+    <%= form.label :major, "Select Major", class: "form-label" %> <!-- Label for the major field -->
+    <%= form.select :major, options_for_select(Student::VALID_MAJORS), { prompt: "Select a Major" }, class: "form-select" %> <!-- Dropdown for majors -->
   </div>
 
-  <div class="field">
-    <%= form.label :graduation_date %> <!-- Label for the graduation date field -->
-    <%= form.date_select :graduation_date %> <!-- Date selection for graduation date -->
+  <div class="mb-3">
+    <%= form.label :graduation_date, class: "form-label" %> <!-- Label for the graduation date field -->
+    <%= form.date_select :graduation_date, class: "form-select" %> <!-- Date selection for graduation date -->
   </div>
 
-  <div class="field">
-    <%= form.label :profile_picture %> <!-- Label for the profile picture field -->
-    <%= form.file_field :profile_picture %> <!-- File upload field for profile picture -->
+  <div class="mb-3">
+    <%= form.label :profile_picture, class: "form-label" %> <!-- Label for the profile picture field -->
+    <%= form.file_field :profile_picture, class: "form-control" %> <!-- File upload field for profile picture -->
   </div>
 
   <div class="actions">
-    <%= form.submit %> <!-- Submit button for the form -->
+    <%= form.submit "Save Student", class: "btn btn-primary" %> <!-- Submit button for the form -->
   </div>
 <% end %>

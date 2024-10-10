@@ -1,16 +1,8 @@
-<div id="<%= dom_id student %>">
-  <p>
-    <strong>First name:</strong>
-    <%= student.first_name %>
-  </p>
+<div id="<%= dom_id(student) %>" class="student-info mb-3">
+  <h5 class="student-name"><%= "#{student.first_name} #{student.last_name}" %></h5> <!-- Combine first and last name -->
 
   <p>
-    <strong>Last name:</strong>
-    <%= student.last_name %>
-  </p>
-
-  <p>
-    <strong>School email:</strong>
+    <strong>School Email:</strong>
     <%= student.school_email %>
   </p>
 
@@ -20,8 +12,22 @@
   </p>
 
   <p>
-    <strong>Graduation date:</strong>
-    <%= student.graduation_date %>
+    <strong>Graduation Date:</strong>
+    <%= student.graduation_date.strftime('%B %d, %Y') if student.graduation_date %> <!-- Format graduation date -->
   </p>
 
+  <!-- Optional: Display profile picture if available -->
+  <div class="profile-picture">
+    <% if student.profile_picture.attached? %>
+      <%= image_tag student.profile_picture.variant(resize_to_fill: [100, 100]), alt: "Profile Picture", class: "img-thumbnail" %>
+    <% else %>
+      <%= image_tag asset_path('default_profile_picture.png'), size: "100x100", alt: "Default Profile Picture", class: "img-thumbnail" %>
+    <% end %>
+  </div>
+
+  <div class="mt-2">
+    <%= link_to "Show", student_path(student), class: "btn btn-info btn-sm", data: { toggle: 'tooltip', title: 'View student details' } %>
+    <%= link_to "Edit", edit_student_path(student), class: "btn btn-warning btn-sm", data: { toggle: 'tooltip', title: 'Edit student details' } %>
+    <%= link_to "Delete", student_path(student), method: :delete, data: { confirm: 'Are you sure?', toggle: 'tooltip', title: 'Delete student' }, class: "btn btn-danger btn-sm" %>
+  </div>
 </div>
