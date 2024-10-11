@@ -57,7 +57,9 @@ group :development do
     gem 'rspec-rails'
   end
 
-  gem 'will_paginate', '~> 3.3.0'
+  group :development, :test do
+    gem 'will_paginate', '~> 3.3.0'
+  end
 
   group :development do
     gem 'faker'
