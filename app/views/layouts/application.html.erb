@@ -1,30 +1,64 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>YourApp</title>
+  <title>Student Finder</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Rails security and asset pipeline -->
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
 
   <!-- Include Bootstrap CSS via CDN -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Include Bootstrap JS via CDN (with Popper for tooltips and dropdowns) -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" defer></script>
+
+  <!-- Rails styles and JavaScript (from app/assets/stylesheets and app/assets/javascripts) -->
   <%= stylesheet_link_tag "application", media: "all", "data-turbo-track": "reload" %>
   <%= javascript_include_tag "application", type: "module", "data-turbo-track": "reload", defer: true %>
 </head>
 
 <body>
-  <!--Test Dropdown  -->
-  <div class="dropdown">
-    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-      Dropdown button
+<!-- Navigation bar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">
+      <%= image_tag 'logo.png', alt: 'YourApp Logo', class: 'img-fluid' %> <!-- Logo for the application -->
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span> <!-- Button for toggling the navigation menu on smaller screens -->
     </button>
-    <ul class="dropdown-menu">
-      <li><a class="dropdown-item" href="#">Action</a></li>
-      <li><a class="dropdown-item" href="#">Another action</a></li>
-      <li><a class="dropdown-item" href="#">Something else here</a></li>
-    </ul>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="<%= students_path %>">Home</a> <!-- Home link -->
+        </li>
+        <!-- Account Dropdown -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="accountDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Account menu">
+            Account
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="accountDropdown">
+            <li><a class="dropdown-item" href="#" aria-label="Sign In to your account">Sign In</a></li>
+            <li><a class="dropdown-item" href="#" aria-label="Create a new account">Sign Up</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
   </div>
-  <%= yield %>
-  </body>
+</nav>
+
+<!-- Banner -->
+<div class="container-fluid bg-primary text-white p-4 text-center">
+  <h1>Student Finder</h1> <!-- Main title of the application -->
+  <p>Helping you manage students efficiently</p> <!-- Subtitle or description -->
+</div>
+
+<!-- Main content -->
+<div class="container mt-4">
+  <%= yield %> <!-- Placeholder for content from other views -->
+</div>
+
+</body>
 </html>

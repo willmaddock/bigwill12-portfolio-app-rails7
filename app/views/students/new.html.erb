@@ -1,9 +1,56 @@
-<h1>New student</h1>
+<h1>New Student</h1>
 
-<%= render "form", student: @student %>
+<%= form_with(model: @student, local: true) do |form| %> <!-- Start the form for the new student -->
+  <% if @student.errors.any? %>
+    <div id="error_explanation" class="alert alert-danger">
+      <h2><%= pluralize(@student.errors.count, "error") %> prohibited this student from being saved:</h2>
+      <ul>
+        <% @student.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
 
-<br>
+  <div class="mb-3">
+    <%= form.label :first_name, class: "form-label" %> <!-- Label for the first name field -->
+    <%= form.text_field :first_name, class: "form-control" %> <!-- Input field for first name -->
+  </div>
 
-<div>
-  <%= link_to "Back to students", students_path %>
+  <div class="mb-3">
+    <%= form.label :last_name, class: "form-label" %> <!-- Label for the last name field -->
+    <%= form.text_field :last_name, class: "form-control" %> <!-- Input field for last name -->
+  </div>
+
+  <div class="mb-3">
+    <!-- Email field with ARIA label and error message -->
+    <%= form.label :school_email, "Email Address", aria: { label: "Email Address" }, class: "form-label" %>
+    <%= form.email_field :school_email, id: 'email', required: true, aria: { describedby: 'emailError' }, class: "form-control" %> <!-- Input field for school email -->
+    <div id="emailError" class="error-message" role="alert">
+      <%= @student.errors[:school_email].any? ? 'Please enter a valid MSU Denver email address.' : '' %>
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :major, class: "form-label" %> <!-- Label for the major field -->
+    <%= form.select :major, options_for_select(Student::VALID_MAJORS), { prompt: "Select a Major" }, class: "form-select" %> <!-- Dropdown for majors -->
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :graduation_date, class: "form-label" %> <!-- Label for the graduation date field -->
+    <%= form.date_select :graduation_date, class: "form-select" %> <!-- Date selection for graduation date -->
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :profile_picture, class: "form-label" %> <!-- Label for the profile picture field -->
+    <%= form.file_field :profile_picture, class: "form-control" %> <!-- File upload field for profile picture -->
+  </div>
+
+  <div class="actions">
+    <%= form.submit "Create Student", class: "btn btn-primary" %> <!-- Submit button for the form -->
+  </div>
+<% end %>
+
+<div class="mt-3">
+  <%= link_to "Back to students", students_path, class: "btn btn-secondary" %> <!-- Link to go back to the students list -->
 </div>
