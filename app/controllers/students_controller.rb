@@ -37,9 +37,11 @@ class StudentsController < ApplicationController
 
     respond_to do |format|
       if @student.save
-        format.html { redirect_to student_url(@student), notice: "Student was successfully created." }
+        flash[:notice] = "Student was successfully created."
+        format.html { redirect_to student_url(@student) }
         format.json { render :show, status: :created, location: @student }
       else
+        flash.now[:alert] = "There was an error creating the student."
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @student.errors, status: :unprocessable_entity }
       end
@@ -50,9 +52,11 @@ class StudentsController < ApplicationController
   def update
     respond_to do |format|
       if @student.update(student_params)
-        format.html { redirect_to student_url(@student), notice: "Student was successfully updated." }
+        flash[:notice] = "Student was successfully updated."
+        format.html { redirect_to student_url(@student) }
         format.json { render :show, status: :ok, location: @student }
       else
+        flash.now[:alert] = "There was an error updating the student."
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @student.errors, status: :unprocessable_entity }
       end
@@ -62,9 +66,10 @@ class StudentsController < ApplicationController
   # DELETE /students/1 or /students/1.json
   def destroy
     @student.destroy!
+    flash[:notice] = "Student was successfully destroyed."
 
     respond_to do |format|
-      format.html { redirect_to students_url, notice: "Student was successfully destroyed." }
+      format.html { redirect_to students_url }
       format.json { head :no_content }
     end
   end
@@ -75,7 +80,8 @@ class StudentsController < ApplicationController
   def set_student
     @student = Student.find(params[:id])
   rescue ActiveRecord::RecordNotFound
-    redirect_to students_path, alert: "Student not found."
+    flash[:alert] = "Student not found."
+    redirect_to students_path
   end
 
   # Strong parameters for creating/updating students
