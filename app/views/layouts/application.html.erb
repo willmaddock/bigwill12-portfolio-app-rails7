@@ -40,8 +40,12 @@
             Account
           </a>
           <ul class="dropdown-menu" aria-labelledby="accountDropdown">
-            <li><a class="dropdown-item" href="#" aria-label="Sign In to your account">Sign In</a></li>
-            <li><a class="dropdown-item" href="#" aria-label="Create a new account">Sign Up</a></li>
+            <% if student_signed_in? %>
+              <li><%= button_to "Sign Out", destroy_student_session_path, method: :delete, class: 'dropdown-item' %></li>
+            <% else %>
+              <li><%= link_to 'Sign In', new_student_session_path, class: 'dropdown-item' %></li>
+              <li><%= link_to 'Sign Up', new_student_registration_path, class: 'dropdown-item' %></li>
+            <% end %>
           </ul>
         </li>
       </ul>
@@ -53,6 +57,21 @@
 <div class="container-fluid bg-primary text-white p-4 text-center">
   <h1>Student Finder</h1> <!-- Main title of the application -->
   <p>Helping you manage students efficiently</p> <!-- Subtitle or description -->
+</div>
+
+<!-- Flash messages -->
+<div class="container mt-3">
+  <% if notice %>
+    <div class="alert alert-success">
+      <p class="notice"><%= notice %></p> <!-- Success flash message -->
+    </div>
+  <% end %>
+
+  <% if alert %>
+    <div class="alert alert-danger">
+      <p class="alert"><%= alert %></p> <!-- Error/Alert flash message -->
+    </div>
+  <% end %>
 </div>
 
 <!-- Main content -->

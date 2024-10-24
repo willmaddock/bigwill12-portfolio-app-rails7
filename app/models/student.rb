@@ -1,4 +1,9 @@
 class Student < ApplicationRecord
+  # Include default devise modules. Others available are:
+  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :validatable
+
   # ActiveStorage for attaching a profile picture
   has_one_attached :profile_picture, dependent: :purge_later
 
@@ -9,16 +14,25 @@ class Student < ApplicationRecord
   VALID_MAJORS = ["Computer Engineering BS", "Computer Information Systems BS",
                   "Computer Science BS", "Cybersecurity Major", "Data Science and Machine Learning Major"]
 
-  # Validation for name, major, email, and graduation date
+  # Validation for name, major, and email
   validates :first_name, :last_name, :major, presence: true
-  validates :school_email, presence: true, uniqueness: true,
-            format: { with: /\A[\w+\-.]+@msudenver.edu\z/i, message: "must be a valid MSU Denver email" }
-  validates :graduation_date, presence: true
+  validates :email, presence: true, uniqueness: true
+  validate :msu_denver_email_format # Custom validation for MSU Denver email format
 
   # Ensuring that the major selected is one of the predefined valid majors
   validates :major, inclusion: { in: VALID_MAJORS, message: "%{value} is not a valid major" }
 
+  # Validation for graduation date presence
+  validates :graduation_date, presence: true
+
   private
+
+  # Custom validation for MSU Denver email format
+  def msu_denver_email_format
+    unless email =~ /\A[\w+\-.]+@msudenver\.edu\z/i
+      errors.add(:email, "must be an @msudenver.edu email address")
+    end
+  end
 
   # Custom validation for profile picture
   def acceptable_profile_picture

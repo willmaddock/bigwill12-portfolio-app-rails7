@@ -1,14 +1,17 @@
 Rails.application.routes.draw do
-  resources :students
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+  # Custom Devise routes for students with controllers mapped to students/registrations, students/sessions, and students/passwords
+  devise_for :students, controllers: {
+    registrations: 'students/registrations',
+    sessions: 'students/sessions',
+    passwords: 'students/passwords'
+  }
 
-  # Defines the root path route ("/")
+  # Define resourceful routes for students
+  resources :students
+
+  # Root path of the application, directing to the index action of the StudentsController
   root "students#index"
 
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
+  # Health check route to verify if the app is live
   get "up" => "rails/health#show", as: :rails_health_check
-
-  # Defines the root path route ("/")
-  # root "posts#index"
 end

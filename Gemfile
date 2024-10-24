@@ -65,6 +65,9 @@ group :development do
     gem 'faker'
   end
 
+  # User authentication https://github.com/heartcombo/devise
+  gem "devise"
+
   # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]
   # gem "rack-mini-profiler"
 

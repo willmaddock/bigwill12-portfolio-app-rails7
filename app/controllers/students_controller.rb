@@ -84,9 +84,9 @@ class StudentsController < ApplicationController
     redirect_to students_path
   end
 
-  # Strong parameters for creating/updating students
+  # Strong parameters for creating/updating students (school_email removed)
   def student_params
-    params.require(:student).permit(:first_name, :last_name, :school_email, :major, :graduation_date, :profile_picture)
+    params.require(:student).permit(:first_name, :last_name, :major, :graduation_date, :profile_picture)
   end
 
   # Method to handle searching students based on the search params
